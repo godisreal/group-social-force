@@ -8,4 +8,4 @@ Cohesive Social Force Model is Simulated with Interactive Opinion Dynamics
 
 Effect of guidance (i.e., exit signs) is simulated for egress
 
-Initial evacuation delay is especially investigated
+Grouping behavior and initial evacuation delay is especially investigated

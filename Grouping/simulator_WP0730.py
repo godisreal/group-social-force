@@ -149,9 +149,7 @@ while running:
         endPx = endPos*10
         pygame.draw.line(screen, LINECOLOR,startPx,endPx)
 
-    # draw agents
-	#   pygame.draw.circle(screen, AGENTCOLOR, (np.array(SCREENSIZE)/2).tolist(),
-	#                      AGENTSIZE, AGENTSICKNESS)
+
 
 
     # 计算相互作用力
@@ -177,10 +175,7 @@ while running:
              otherMovingDir += ai.peopleInterOpinion(aj)[0]
 	     otherMovingSpeed += ai.peopleInterOpinion(aj)[1]
 	     otherMovingNum += ai.peopleInterOpinion(aj)[2]
-
-	     #ai.desiredV = ai.p*ai.desiredV + ai.peopleInterOpinion(aj)[0]
-	     # The Above Method is Not Correct
-        
+      
 
 	if otherMovingNum != 0:
 	    ai.direction = ai.p*ai.direction + (1-ai.p)*otherMovingDir

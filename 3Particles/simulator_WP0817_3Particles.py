@@ -151,10 +151,6 @@ while running:
         endPx = endPos*ZOOMFACTOR
         pygame.draw.line(screen, LINECOLOR,startPx,endPx)
 
-    # draw agents
-	#   pygame.draw.circle(screen, AGENTCOLOR, (np.array(SCREENSIZE)/2).tolist(),
-	#                      AGENTSIZE, AGENTSICKNESS)
-
 
     # 计算相互作用力
     for idai,ai in enumerate(agents):

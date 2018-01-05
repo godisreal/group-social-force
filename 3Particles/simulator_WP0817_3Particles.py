@@ -7,8 +7,8 @@ import pygame.draw
 import numpy as np
 #import pedestrian_0817
 from pedestrian_0817 import *
+#from particle_Regroup import *
 #from tools import *
-#from config import *
 import random
 import matplotlib.pyplot as plt
 
@@ -101,10 +101,15 @@ AFactor = AFactor_Init
 BFactor = BFactor_Init
 
 v0 = []
+v1 = []
 v2 = []
 
 vd0 = []
-vd0 = []
+vd1 = []
+vd2 = []
+
+range02 = []
+d02 = []
 
 # initialize agents
 agents = []
@@ -207,9 +212,18 @@ while running:
 	#ai.desiredV = ai.p*ai.desiredV + (1-ai.p)*otherMovingDir
 	
 	if idai == 0:
-	    v0.append(ai.desiredSpeed)
+	    v0.append(np.linalg.norm(ai.actualV))
+	    vd0.append(ai.desiredSpeed)
+	if idai == 1:
+	    v1.append(np.linalg.norm(ai.actualV))
+	    vd1.append(ai.desiredSpeed)
 	if idai == 2: 
-	    v2.append(ai.desiredSpeed)
+	    v2.append(np.linalg.norm(ai.actualV))
+	    vd2.append(ai.desiredSpeed)
+
+	if idai == 0 and idaj == 2:
+	    range02.append(ai.interactionRange)
+	    d02.append(dij)
 
         adapt = ai.adaptVel()
 	
@@ -262,11 +276,31 @@ while running:
     pygame.display.flip()
     clock.tick(20)
 
-print('v0:', v0)
-print('v2:', v2)
+#print('v0:', vd0)
+#print('v1:', vd1)
+#print('v2:', vd2)
+
+np.save("vd0.npy",vd0)
+np.save("vd1.npy",vd1)
+np.save("vd2.npy",vd2)
+
 np.save("v0.npy",v0)
+np.save("v1.npy",v1)
 np.save("v2.npy",v2)
+
 #plt.figure('data')
-plt.plot(v0)
-plt.plot(v2)
+plt.plot(vd0)
+plt.plot(vd1)
+plt.plot(vd2)
+#plt.plot(d02)
+
+#plt.subplot(121, vd0)
+#plt.subplot(121, vd1)
+#plt.subplot(121, vd2)
+
+#plt.subplot(122, v0)
+#plt.subplot(122, v1)
+#plt.subplot(122, v2)
+
 plt.show()
+

@@ -1,4 +1,4 @@
-# Multi-Agent Simulation For Crowd Dynamics
+# Multi-Agent Simulation For Collective Behavior
 
 Cohesive Social Force Model is Simulated with Interactive Opinion Dynamics.  The fundamental idea is demonstrated as below. The model aims at investigating protypes of pedestrian behavior in a general sense. The current version of model especially contributes to simulating the crowd behavior in evacuation scenarios.
 

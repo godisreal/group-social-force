@@ -4,7 +4,8 @@ Cohesive Social Force Model is Simulated with Interactive Opinion Dynamics.  The
 
 ![](https://github.com/godisreal/Many-Particle-System/blob/master/FigNew.PNG)
 
-Pygame is required to run the code
-
+In the repository there are several small examples to test protypes of the model.  The example is written in Python, and Pygame is required to run the code.  
 How-To: Run simulator_XXX.py in a python console
 
+The traditional social force model is modified to study group dynamics.  The algorithm is tested in FDS+Evac, and below is a testing result.  
+![](https://github.com/godisreal/group-social-force/blob/master/fig/groups.PNG)

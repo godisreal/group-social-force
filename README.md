@@ -7,5 +7,6 @@ Cohesive Social Force Model is Simulated with Interactive Opinion Dynamics.  The
 In the repository there are several small examples to test protypes of the model.  The example is written in Python, and Pygame is required to run the code.  
 How-To: Run simulator_XXX.py in a python console
 
-The traditional social force model is modified to study group dynamics.  The algorithm is tested in FDS+Evac, and below is a testing result.  
-![](https://github.com/godisreal/group-social-force/blob/master/fig/groups.PNG)
+The traditional social force model is modified to study group dynamics.  The algorithm is tested in FDS+Evac.  
+The detailed work is introduced as below.  
+https://www.researchgate.net/publication/303302099_Understanding_Social-Force_Model_in_Psychological_Principles_of_Collective_Behavior

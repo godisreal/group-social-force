@@ -1,5 +1,5 @@
 # -*-coding:utf-8-*-
-# Author: WP and SS
+# Author: SS and WP
 # Email: wp2204@gmail.com
 
 import numpy as np
@@ -54,6 +54,27 @@ def vectorAngleCos(x,y):
 	angle = 0.0
     return angle
     
+def GeneralEquation(first_x,first_y,second_x,second_y):
+    # 一般式 Ax+By+C=0
+    # from http://www.cnblogs.com/DHUtoBUAA/
+    A=second_y-first_y
+    B=first_x-second_x
+    C=second_x*first_y-first_x*second_y
+    return A,B,C
+    
+
+def GetIntersectPointofLines(x1,y1,x2,y2,x3,y3,x4,y4):
+    # from http://www.cnblogs.com/DHUtoBUAA/
+    A1,B1,C1=GeneralEquation(x1,y1,x2,y2)
+    A2,B2,C2 = GeneralEquation(x3,y3,x4,y4)
+    m=A1*B2-A2*B1
+    if m==0:
+        print("无交点")
+    else:
+        x=(C2*B1-C1*B2)/m
+        y=(C1*A2-C2*A1)/m
+    return x,y
+
 
 # 计算点到线段的距离，并计算由点到与线段交点的单位向量
 def distanceP2W(point, wall):

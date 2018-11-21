@@ -1,0 +1,9 @@
+,InitalX,InitialY,DestX,DestY
+Person1,1,0,0,0
+Person2,0,1,0,0
+Person3,-1,0,1,0
+Person4,0,0,0,1
+Person5,0,-1,0,0
+Person6,0,0,-1,0
+Person7,0,0,0,-1
+Person8,0,0,0,0

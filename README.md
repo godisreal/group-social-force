@@ -6,3 +6,5 @@ Cohesive Social Force Model is Simulated with Interactive Opinion Dynamics.  The
 
 In the repository there are several small examples to test protypes of the model.  The example is written in Python, and Pygame is required to run the code.  
 How-To: Run simulator_XXX.py in a python console
+
+Pull requests welcome!

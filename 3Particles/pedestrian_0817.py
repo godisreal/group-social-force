@@ -20,8 +20,8 @@ def g(x):
 
 def vectorAngleCos(x,y):
     if (len(x) != len(y)):
-	print('error input,x and y is not in the same dimension')
-	return
+        print('error input,x and y is not in the same dimension')
+        return
     angleCos = np.dot(x,y)/(np.linalg.norm(x)*np.linalg.norm(y))
     angle = np.arccos(angleCos)
     return angle
@@ -52,7 +52,7 @@ def distanceP2W(point, wall):
 class Pedestrian(object):
     def __init__(self, x=1, y=1):
         # random initialize a agent
-        
+
         self.posX = random.uniform(8,24)
         self.posY = random.uniform(8,18)
         self.pos = np.array([self.posX, self.posY])
@@ -65,31 +65,31 @@ class Pedestrian(object):
         self.dest = np.array([60.0,10.0])
         self.direction = normalize(self.dest - self.pos)
         #self.direction = np.array([0.0, 0.0])
-        
+
         self.desiredSpeed = 0.0 #random.uniform(0.3,2.3) #1.8
         self.desiredV = self.desiredSpeed*self.direction
-        
+
         self.acclTime = 2 #random.uniform(8,16) #10.0
         self.drivenAcc =(self.desiredV - self.actualV)/self.acclTime
-        
-        
+
+
         self.mass = 60 #random.uniform(40,90) #60.0
         self.radius = 0.35
         self.interactionRange = 1.2
         self.p = 0.1
-        
+
         self.bodyFactor = 120000
         self.slideFricFactor = 240000
         self.A = 2
         self.B = 0.6 #random.uniform(0.8,1.6) #0.8 #0.08
-	
-	self.desiredV_old = np.array([0.0, 0.0])
-	self.actualV_old = np.array([0.0, 0.0])
-        
+
+        self.desiredV_old = np.array([0.0, 0.0])
+        self.actualV_old = np.array([0.0, 0.0])
+
         print('X and Y Position:', self.pos)
-	print('Actual Velocity:', self.actualV)
+        print('Actual Velocity:', self.actualV)
         print('self.direction:', self.direction)
-        
+
 
 
     # def step(self):
@@ -110,8 +110,8 @@ class Pedestrian(object):
     #     self.pos = r0 + v0 + 0.5*accl
     #     print(accl,self.actualV,self.pos)
 
-        
-        
+
+
     def adaptVel(self):
         deltaV = self.desiredV - self.actualV
         if np.allclose(deltaV, np.zeros(2)):
@@ -120,8 +120,8 @@ class Pedestrian(object):
 
 
     def selfRepulsion(self, Dfactor=1, Afactor=1, Bfactor=1):
-	first = -self.direction*Afactor*self.A*np.exp((self.radius*Dfactor)/(self.B*Bfactor))*(self.radius*Dfactor)
-	return first
+        first = -self.direction*Afactor*self.A*np.exp((self.radius*Dfactor)/(self.B*Bfactor))*(self.radius*Dfactor)
+        return first
 
 
     def changeAttr(self, x=1, y=1, Vx=1, Vy=1):
@@ -136,7 +136,7 @@ class Pedestrian(object):
     def showAttr(self):
         print('X and Y Position:', self.pos)
         print('The destination', self.dest)
-        
+
 
 
     def peopleInteraction(self, other, Dfactor=1, Afactor=1, Bfactor=1):
@@ -164,50 +164,46 @@ class Pedestrian(object):
         return first #- second
 
     def wallOnRoute(self, wall):
-	self.pos
-	self.actualV
-	return true
-		
-		
+        self.pos
+        self.actualV
+        return true
+
+
     def peopleInterOpinion(self, other, Dfactor=1, Afactor=1, Bfactor=1):
         rij = self.radius + other.radius
-	dij = np.linalg.norm(self.pos - other.pos)
+        dij = np.linalg.norm(self.pos - other.pos)
         #nij = (self.pos - other.pos)/dij
-        
+
         #if dij < self.interactionRange:
-	#    self.dest = self.p*self.dest + (1-self.p)*other.dest
+        #    self.dest = self.p*self.dest + (1-self.p)*other.dest
 
-	otherDirection = np.array([0.0, 0.0])
-	otherSpeed = 0.0
-	num = 0
-	otherV = np.array([0.0, 0.0])
-	
-	#if dij < self.B*Bfactor + rij*Dfactor:
-        if dij < self.interactionRange: 
-	    #self.desiredV = self.p*self.desiredV + (1-self.p)*other.actualV
-	    otherDirection = normalize(other.actualV)
-	    otherSpeed = np.linalg.norm(other.actualV)
-	    num = 1
-	    otherV = other.actualV
-	
+        otherDirection = np.array([0.0, 0.0])
+        otherSpeed = 0.0
+        num = 0
+        otherV = np.array([0.0, 0.0])
+
+        #if dij < self.B*Bfactor + rij*Dfactor:
+        if dij < self.interactionRange:
+            #self.desiredV = self.p*self.desiredV + (1-self.p)*other.actualV
+            otherDirection = normalize(other.actualV)
+            otherSpeed = np.linalg.norm(other.actualV)
+            num = 1
+            otherV = other.actualV
+
         return otherDirection, otherSpeed, num, otherV
-		
-        
-        
+
+
+
 if __name__ == '__main__':
-	Ped1 = Pedestrian()
-	Ped2 = Pedestrian()
-	f1 = Ped1.peopleInteraction(Ped2)
-	f2 = Ped2.peopleInteraction(Ped1)
-	g1 = Ped1.peopleInterOpinion(Ped2)[0]
-	g2 = Ped2.peopleInterOpinion(Ped1)[2]
-	print('Other Opinion', g1)
-	print('Other Opinion', g2)
-	Ped1.showAttr()
-	v = Ped1.adaptVel
-	Ped1.changeAttr(1,1)
-	Ped2.changeAttr(2,2)
-
-
-
-	
+        Ped1 = Pedestrian()
+        Ped2 = Pedestrian()
+        f1 = Ped1.peopleInteraction(Ped2)
+        f2 = Ped2.peopleInteraction(Ped1)
+        g1 = Ped1.peopleInterOpinion(Ped2)[0]
+        g2 = Ped2.peopleInterOpinion(Ped1)[2]
+        print('Other Opinion', g1)
+        print('Other Opinion', g2)
+        Ped1.showAttr()
+        v = Ped1.adaptVel
+        Ped1.changeAttr(1,1)
+        Ped2.changeAttr(2,2)

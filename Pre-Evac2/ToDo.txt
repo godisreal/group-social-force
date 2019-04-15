@@ -1,0 +1,18 @@
+wallInBetween may interfere with the cohesive social force/group force.  
+Check Tpre features, and tpre may be combined with herding effect. 
+Selfrepulsion may be moved out of the idaj, aj loop. (selfrepulsion is not related to aj)
+Wall direction: guiding effect of walls in egress.  
+
+Guiders/Doors/Exits
+
+cohesiveForce -> cohesiveSF
+
+Test with A_CF B_CF ... What is the proper value?  
+
+
+To do: 
+1. how to adjust ai.p based on ai.stressLevel or other info? 
+2. comm represents sight information?  ai.interange is for exchange of opinions?  
+
+
+ 

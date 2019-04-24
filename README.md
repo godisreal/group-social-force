@@ -7,5 +7,7 @@ Group Social Force is implemented with Interactive Opinion Dynamics.  The fundam
 In the repository there are several small examples to test protypes of the model.  The example is written in Python, and Pygame is required to run the code.  
 How-To: Run simulator_XXX.py in a python console
 
+The latest version of code is in Pre-Evac2
+
 The source code runs well in Python 2.7.  The core computation runs OK in Python 3, but not sure about displaying the simulation result in Pygame with Python 3.    
 Pull requests welcome!

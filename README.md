@@ -18,3 +18,30 @@ https://github.com/dslwz2008/SocialForceModel
 
 The source code runs well in Python 2.7.  The core computation runs OK in Python 3, but not sure about displaying the simulation result in Pygame with Python 3.    
 Pull requests welcome!
+
+### Current Version: 
+
+![](https://github.com/godisreal/group-social-force/blob/master/Pre-Evac2/pre-evac2.PNG)
+
+### Walls are abstracted in type of lines and specified in Wall_Data2018.csv
+<Start X, Start Y>: 	Start Point 
+<End X, End Y>: 		  End Point 
+
+
+### Agents are specified in the Agent_Data2018.csv
+<InitalX, InitialY>: 	Initial Positions  
+<DestX, DestY>: 		  Destination Positions  
+acclTime: 				    Relaxation Time in Social Force Model  
+tpre: 					      The TPRE Time in the Pre-Evacuation Stage  
+
+
+### Some boolean variables are used to set up the simulation (simulator_XXX.py)
+THREECIRCLES = False  	# Use 3 circles to draw agents  
+SHOWVELOCITY = False	# Show velocity and desired velocity of agents  
+SHOWINDEX = True        # Show index of agents  
+SHOWTIME = True         # Show a clock on the screen  
+SHOWINTELINE = True     # Draw a line between interacting agents  
+MODETRAJ = True        # Keep trajectory of agents' movement  
+
+Several things to do to improve existing work!  
+Maybe I should write a brief manual in the future.  Commets are much appreciated!

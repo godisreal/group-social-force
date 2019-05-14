@@ -13,5 +13,8 @@ Comment and suggestion are appreciated!
 You can also check the video file pre-evac2.swf to browse the simulation result in the latest version.  
 https://github.com/godisreal/group-social-force/blob/master/pre-evac2.swf
 
+Thank Shen Shen for his original work on Social Force Model.  This repo was initially built up based on Shen Shen's code.  
+https://github.com/dslwz2008/SocialForceModel
+
 The source code runs well in Python 2.7.  The core computation runs OK in Python 3, but not sure about displaying the simulation result in Pygame with Python 3.    
 Pull requests welcome!

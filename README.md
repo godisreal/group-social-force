@@ -1,6 +1,7 @@
 # Multi-Agent Simulation For Collective Behavior
 
-Group Social Force is implemented with Interactive Opinion Dynamics.  The fundamental idea is demonstrated as below. The model aims at investigating protypes of pedestrian behavior in a general sense. The current version of model especially contributes to simulating the crowd behavior in evacuation scenarios.
+Group Social Force is implemented with Interactive Opinion Dynamics.  This model is an extension of the social force model introduced by Helbing and Molnár (1995) and Helbing, Farkas, and Vicsek (2000). 
+The fundamental idea is demonstrated as below in a feedback style. The model aims at investigating protypes of pedestrian behavior in a general sense. The current version of model especially contributes to simulating the crowd behavior in evacuation scenarios.
 
 ![](https://github.com/godisreal/Many-Particle-System/blob/master/FigNew.PNG)
 
@@ -21,7 +22,7 @@ Pull requests welcome!
 
 ### Current Version: 
 
-![](https://github.com/godisreal/group-social-force/blob/master/Pre-Evac2/pre-evac2.PNG)
+![](https://github.com/godisreal/group-social-force/blob/master/Pre-Evac2/pre-evac2b.PNG)
 
 ### Walls are abstracted in type of lines and specified in Wall_Data2018.csv
 <Start X, Start Y>: 	Start Point 
@@ -33,15 +34,6 @@ Pull requests welcome!
 <DestX, DestY>: 		  Destination Positions  
 acclTime: 				    Relaxation Time in Social Force Model  
 tpre: 					      The TPRE Time in the Pre-Evacuation Stage  
-
-
-### Some boolean variables are used to set up the simulation (simulator_XXX.py)
-THREECIRCLES = False  	# Use 3 circles to draw agents  
-SHOWVELOCITY = False	# Show velocity and desired velocity of agents  
-SHOWINDEX = True        # Show index of agents  
-SHOWTIME = True         # Show a clock on the screen  
-SHOWINTELINE = True     # Draw a line between interacting agents  
-MODETRAJ = True        # Keep trajectory of agents' movement  
 
 Several things to do to improve existing work!  
 Maybe I should write a brief manual in the future.  Commets are much appreciated!

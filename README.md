@@ -1,6 +1,6 @@
 # Multi-Agent Simulation For Collective Behavior
 
-Group Social Force is implemented with Interactive Opinion Dynamics.  This model is an extension of the social force model introduced by Helbing and Molnár (1995) and Helbing, Farkas, and Vicsek (2000). 
+Cohesive Social Force is implemented with Interactive Opinion Dynamics.  This model is an extension of the social force model introduced by Helbing and Molnár (1995) and Helbing, Farkas, and Vicsek (2000). 
 The fundamental idea is demonstrated as below in a feedback style. The model aims at investigating protypes of pedestrian behavior in a general sense. The current version of model especially contributes to simulating the crowd behavior in evacuation scenarios.
 
 ![](https://github.com/godisreal/Many-Particle-System/blob/master/FigNew.PNG)

@@ -1,0 +1,9 @@
+,01/InitalX,02/InitialY,03/DestX,04_DestY,05_tau,06_tpre,07_p,pMode,aType,interRange,ID,moving_tau,tpre_tau,talk_tau,talk_prob,inComp,radius,mass,maxSpeed
+Person0,6.33,13,66,23,0.3,3,0,fixed,active,3,0,0.3,0.7,2.6,0.7,1,0.35,47,1.2
+Person1,7.33,15,66,23,0.6,16,0.6,random,active,2,1,0.6,2.3,3.2,0.7,1,0.35,60,1.2
+Person2,8.33,17,66,13,3,17,0,fixed,active,3,2,3,2.2,2.3,0.7,1,0.35,43,1.2
+Person3,9.33,23,66,23,2.3,17,0.3,random,active,6,3,2.3,0.3,1.6,0.7,1,0.35,60,1.2
+Person4,10.33,8,66,22,1.3,32,0.4,random,active,3,4,1.3,0.6,3.3,0.7,1,0.35,60,1.2
+Person5,11.33,8,66,13,1.6,33,0.36,random,follow,2,5,1.6,1.6,3.6,0.7,1,0.35,60,1.2
+Person6,12.33,12,66,22,1.7,36,0.63,random,follow,6,6,1.7,2.6,4.6,0.7,1,0.35,76,1.2
+Person7,13.33,16,66,23,12,47,0.66,random,search,3,7,12,0.3,3.6,0.7,0,0.35,60,1.2

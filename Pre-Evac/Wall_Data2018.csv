@@ -1,6 +1,10 @@
-,start X,start Y,end X,end Y
-Line1,3.33,3.33,29.97,3.33
-Line2,3.33,3.33,3.33,33.31
-Line3,3.33,33.31,29.97,33.31
-Line4,23.31,3.33,33.31,14.02
-Line5,33.31,20.92,23.31,33.31
+,start X,start Y,end X,end Y,wallArrow,pointerX,pointerY
+LongLDown,3.33,3.33,49.97,3.33,0,NaN,NaN
+Line2,3.33,3.33,3.33,33.31,0,NaN,NaN
+LongLUp,3.33,33.31,49.97,33.31,0,NaN,NaN
+Line4,23.31,3.33,30,14.02,0,NaN,NaN
+Line5,30,20.92,23.31,33.31,0,NaN,NaN
+Line6,30,14.02,37,14.02,0,NaN,NaN
+Line7,30,20.92,37,20.92,0,NaN,NaN
+Blc8,46,17,46,26,0,46,30
+Blc9,46,8,46,17,0,46,6

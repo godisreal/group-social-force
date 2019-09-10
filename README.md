@@ -5,7 +5,7 @@ The fundamental idea is demonstrated as below in a feedback style. The model aim
 
 ![](https://github.com/godisreal/Many-Particle-System/blob/master/FigNew.PNG)
 
-In the repository there are several small examples to test protypes of the model.  The example is written in Python, and Pygame is required to run the code.  
+In the repository there are several small examples to test protypes of the model.  The example is written in Python, and Pygame and Numpy are required to run the code.  
 How-To: Run simulator_XXX.py in a python console
 
 The latest version of code is in Pre-Evac2  
@@ -27,7 +27,6 @@ Pull requests welcome!
 ### Walls are abstracted in type of lines and specified in Wall_Data2018.csv
 <Start X, Start Y>: 	Start Point 
 <End X, End Y>: 		  End Point 
-
 
 ### Agents are specified in the Agent_Data2018.csv
 <InitalX, InitialY>: 	Initial Positions  

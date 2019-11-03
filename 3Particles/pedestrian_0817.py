@@ -2,11 +2,8 @@
 # Author: WP
 # Email: wp2204@126.com
 
-
 import numpy as np
-#from tools import *
 import random
-
 
 def normalize(v):
     norm=np.linalg.norm(v)
@@ -15,8 +12,10 @@ def normalize(v):
     return v/norm
 
 def g(x):
-    return np.max(x, 0)
-
+    if x>=0:
+        return x
+    else:
+        return 0
 
 def vectorAngleCos(x,y):
     if (len(x) != len(y)):
@@ -28,6 +27,8 @@ def vectorAngleCos(x,y):
 
 
 # 计算点到线段的距离，并计算由点到与线段交点的单位向量
+# Calculate the distance from a point to a line segment
+# Calculate the unit vector directing from the point to the line segment
 def distanceP2W(point, wall):
     p0 = np.array([wall[0],wall[1]])
     p1 = np.array([wall[2],wall[3]])
@@ -72,11 +73,14 @@ class Pedestrian(object):
         self.acclTime = 2 #random.uniform(8,16) #10.0
         self.drivenAcc =(self.desiredV - self.actualV)/self.acclTime
 
-
         self.mass = 60 #random.uniform(40,90) #60.0
         self.radius = 0.35
         self.interactionRange = 1.2
         self.p = 0.1
+
+        self.wallrepF= np.array([0.0,0.0])
+        self.groupF= np.array([0.0,0.0])
+        self.selfrepF= np.array([0.0,0.0])
 
         self.bodyFactor = 120000
         self.slideFricFactor = 240000
@@ -85,6 +89,9 @@ class Pedestrian(object):
 
         self.desiredV_old = np.array([0.0, 0.0])
         self.actualV_old = np.array([0.0, 0.0])
+
+        self.Goal = 0
+        self.timeOut = 0.0
 
         print('X and Y Position:', self.pos)
         print('Actual Velocity:', self.actualV)

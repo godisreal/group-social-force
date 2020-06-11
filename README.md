@@ -9,9 +9,8 @@ In the repository there are several small examples to test protypes of the model
 How-To: python simulator_XXX.py
 
 The latest version of code is in 2Path  
-A complete simulation package is in the following repo
+A complete simulation package is in the following repo.  Comment and suggestion are appreciated!  
 https://github.com/godisreal/CrowdEgress
-Comment and suggestion are appreciated!
 
 You can also check the video file pre-evac2.swf to browse the simulation result in the latest version.  
 https://github.com/godisreal/group-social-force/blob/master/pre-evac2.swf

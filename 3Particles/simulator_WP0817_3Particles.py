@@ -157,12 +157,11 @@ while running:
         pygame.draw.line(screen, LINECOLOR,startPx,endPx)
 
 
-    # 计算相互作用力
     for idai,ai in enumerate(agents):
         # 初始速度和位置
         ai.direction = normalize(ai.dest - ai.pos)
         ai.desiredV = ai.desiredSpeed*ai.direction
-        # 计算受力
+        # Compute forces on agents
         #adapt = ai.adaptVel()
         peopleInter = 0.0
         wallInter = 0.0
@@ -234,16 +233,16 @@ while running:
         #print('Forces from people:', peopleInter)
 
         sumForce = adapt + peopleInter + wallInter
-        # 计算加速度
+        # Compute acceleration
         accl = sumForce/ai.mass
-        # 计算速度
+        # Compute velocity
         ai.actualV = ai.actualV + accl*0.2 # consider dt = 0.5
 
         #temp = ai.actualV + accl*0.5
         #if np.sqrt(np.dot(temp,temp)) < 2:
         #    ai.actualV = ai.actualV + accl*0.5 # consider dt = 0.5
 
-        # 计算位移
+        # Calculate position
         ai.pos = ai.pos + ai.actualV*0.2
         #print(ai.pos)
         #print(accl,ai.actualV,ai.pos)

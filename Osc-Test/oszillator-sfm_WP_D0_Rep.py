@@ -1,12 +1,11 @@
 """
-Implementation of SFM to investigate oscillations. For dertails see
-http://arxiv.org/abs/1412.1133
+Implementation of SFM to investigate oscillations. 
 """
 #-------------------------------------------------------------
 # from numpy import *
 
-from numpy import *
 import numpy as np
+from numpy import *
 import logging
 import time
 import matplotlib.pyplot as plt
@@ -29,11 +28,15 @@ def init(N):
     shift = float(Length)/N
     x_n = 0.5*shift + shift*np.arange(N)
     dx_n = np.zeros(N)
+    d0 = np.ones(N)*d0_init
      
     Fd = np.zeros(N)
     Fr = np.zeros(N)
-    
-    return np.vstack( [x_n, dx_n] ), Fd, Fr    
+    v0 = np.ones(N)*v0_init
+    dd0 = np.zeros(N)
+
+    #return np.vstack( [x_n, dx_n] ), Fd, Fr
+    return np.vstack( [x_n, dx_n, d0] ), Fd, Fr, v0, dd0
 #======================================================
 # runge-kutta solver
 def rk4(x, h, y, f):
@@ -43,10 +46,11 @@ def rk4(x, h, y, f):
     k4 = h * f(x + h, y + k3)
     return x + h, y + (k1 + 2*(k2 + k3) + k4)/6.0
 #======================================================
-def euler(x, h, y, f):
-    y_new, Fd, Fr = f(x, y)
-    return x + h, y + h * y_new, Fd, Fr
+def euler(t, h, y, f):
+    y_new, Fd, Fr, v0, dd0 = f(t, y)
+    return t + h, y + h * y_new, Fd, Fr, v0, dd0
 #======================================================
+#Not Used
 def get_state_vars(state):
     """
     state variables and dist 
@@ -56,36 +60,37 @@ def get_state_vars(state):
     x_m[ -1 ] += Length    # the first one goes ahead by Length
     dx_n = state[1,:]      # dx_n
     dx_m = np.roll(dx_n, -1)  # dx_{n+1}
-    dist = x_m - x_n  
+    dist = x_m - x_n
+    #d0 = state[2,:]
     return x_n, x_m, dx_n, dx_m, dist
-
-def g(x):
-    y=x
-    for i in range(len(x)):
-        if x[i]>=0:
-            y[i]=x[i]
-        else:
-            y[i]=0.0
-    return y
-
 #======================================================
-def model(t, state, mode='GCF'):
+def model(t, state):
     """
     exp-distance model nature 2000
     """
-    x_n, x_m, dx_n, dx_m, dist = get_state_vars(state)
+    #x_n, x_m, dx_n, dx_m, dist = get_state_vars(state)
+    x_n = state[0,:]       # x_n  
+    x_m = np.roll(x_n, -1)    # x_{n+1}
+    x_m[ -1 ] += Length    # the first one goes ahead by Length
+    dx_n = state[1,:]      # dx_n
+    dx_m = np.roll(dx_n, -1)  # dx_{n+1}
+    dist = x_m - x_n
+    d0 = state[2,:]
+    #v0 = m*(d0-dist)
 
+    #print('d0:', d0, '\n')
+    #(I, J) = np.shape(d0)
+    #print('shape of d0:', (I, J), '\n')
+    for i in range(0, len(v0)):
+        if d0[i]-dist[i]<d_range and d0[i]-dist[i]>-d_range:
+            v0[i] = v0[i] #k1*(d0[i]-dist[i]) + k3*(dx_m[i]-dx_n[i])  #v0[i] #-dd0[i]+
+        else:
+            v0[i] = v0[i]
+    
     #get acceleration => sum of forces
     f_drv = (v0 - dx_n)/tau
-    if mode=='GSF':
-        f_rep = -a*np.exp((d0-dist)/b)*(d0-dist)
-    elif mode=='GCF':
-        #f_rep = -(1.0/dist)*(eta*v0+beta*g(dx_n-dx_m))**2
-        f_rep = -(1.0/dist)*(eta*v0+beta*np.maximum((dx_n-dx_m),0.0))**2
-    elif mode='GSF+GCF'
-        f_rep = -a*np.exp((d0-dist)/b)*(d0-dist)+(beta*np.maximum((dx_n-dx_m),0.0))**2
-    else:
-        print('Error: No interaction force defined! \n')
+    f_rep = -a*np.exp((d0-dist)/b) #*(d0-dist)
+    #f_rep = -a*(v0+dx_m-dx_n)^2/dist
 
     Fd = f_drv
     Fr = f_rep
@@ -96,14 +101,27 @@ def model(t, state, mode='GCF'):
     x_n_new = dx_n
     dx_n_new = a_n
 
+    #dd0 = np.zeros(N)
+    #dd0 = -0.2*(d0-dist)
+
+    #(I, J) = np.shape(d0)
+    for i in range(0, len(dd0)):
+        if d0[i]-dist[i]<d_range and d0[i]-dist[i]>-d_range:
+            dd0[i] = k2*(d0[i]-dist[i]) #k3*(dx_m[i]-dx_n[i])
+        else:
+            dd0[i] = 0.0
+
     x_n_new[-1] = 0   #ped 2 should not move
     dx_n_new[-1] = 0  #ped 2 should not move
+    dd0[-1] = 0
 
-    new_state = np.vstack([x_n_new, dx_n_new])
-    return new_state, Fd, Fr
+    d0_new = dd0
+
+    new_state = np.vstack([x_n_new, dx_n_new, d0_new])
+    return new_state, Fd, Fr, v0, dd0
+
 #======================================================
-
-def simulation(N, t_end, state, Fd, Fr):
+def simulation(N, t_end, state, Fd, Fr, v0, dd0):
     t = 0
     frame = 0
     ids = np.arange(N_ped)
@@ -111,33 +129,35 @@ def simulation(N, t_end, state, Fd, Fr):
         if frame%(1/(dt*fps)) < 1e-8: # one frame per second
 
             T = t*np.ones(N_ped)
-            output = np.vstack([ids, T, state, Fd, Fr]).transpose()
-            np.savetxt(f, output, fmt="%d\t %f\t %f\t %f\t %f\t %f")
+            output = np.vstack([ids, T, state, Fd, Fr, v0, dd0]).transpose()
+            np.savetxt(f, output, fmt="%d\t %f\t %f\t %f\t %f\t %f\t%f\t%f\t%f")
             f.flush()
 
         if RK4: # Runge-Kutta 4
             t, state = rk4(t, dt, state, model)
         else: # Euler
-            t, state, Fd, Fr = euler(t, dt, state, model)
+            t, state, Fd, Fr, v0, dd0 = euler(t, dt, state, model)
 
         frame += 1
 
 
 #===================== MAIN =================================
 if __name__=="__main__":
-    b = 3.6 # 0.5 #0.08
-    a = 20 # 300 #2000
+    b =3.6 #0.5 #0.08
+    a = 2.4 #300 #2000
     tau = 0.5
-    v0 = 1.2
-    d0 = 0.6
-    eta = 1.0
-    beta = 0.3 #1.0 #0.3
+    v0_init = 1.2
+    d0_init = 0.6
+    d_range = 1.8
+    k1= 6.2
+    k2= 0.0 #-1.8
+    k3=3.0
 
-    filename = "GCF_traj_N%d_a%.2f_b%.2f_v0%.2f_tau%.2f_20190923.txt"%(N_ped, a, b, v0, tau) #trajectory file
+    filename = "Rep_k3TestV0_traj_N%d_a%.2f_b%.2f_v0%.2f_d0%.2f_tau%.2f.txt"%(N_ped, a, b, v0_init, d0_init, tau) #trajectory file
 
     f = open(filename, 'w+')
 
-    state, Fd, Fr = init(N_ped)
+    state, Fd, Fr, v0, dd0 = init(N_ped)
 
     t1 = time.clock()
 
@@ -148,12 +168,12 @@ if __name__=="__main__":
     else:
         print 'Oscillations: constant = %.3f'%constant
      ######################################################
-    simulation(N_ped, t_end, state, Fd, Fr)
+    simulation(N_ped, t_end, state, Fd, Fr, v0, dd0)
     ######################################################
     t2 = time.clock()
     f.close()
 
-    
+
     #==========Plot the data============
     ms = 10
     fs = 20

@@ -1,6 +1,5 @@
 """
-Implementation of SFM to investigate oscillations. For dertails see
-http://arxiv.org/abs/1412.1133
+Implementation of SFM to investigate oscillations. 
 """
 #-------------------------------------------------------------
 # from numpy import *

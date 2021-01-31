@@ -1,8 +1,26 @@
+
 \documentclass{article}
-\begin{document}
+%\documentclass[10pt,letterpaper]{article}
+%\usepackage[top=0.85in,left=2.75in,footskip=0.75in]{geometry}
+
+% amsmath and amssymb packages, useful for mathematical formulas and symbols
+%\usepackage{amsmath,amssymb}
+
+% Use adjustwidth environment to exceed column width (see example table in text)
+%\usepackage{changepage}
+
+% Use Unicode characters when possible
+%\usepackage[utf8x]{inputenc}
+
+% textcomp package and marvosym package for additional characters
+%\usepackage{textcomp,marvosym}
 
 \usepackage{graphicx}
+\usepackage[english]{babel}
+\usepackage{amsmath,amsthm}
+\usepackage{amsfonts}
 
+\begin{document}
 \title{Social Force in Pedestrian Crowd}
 \author{Peng Wang}%
 
@@ -56,17 +74,17 @@ This force describes an individual tries to move with a desired velocity $\mathb
 
 %
 \begin{figure}[tb]
-  \centerline{\includegraphics[clip=true, width=30mm]{FIGURES/twoAgents.png}}
+  \centerline{\includegraphics[clip=true, width=30mm, scale=0.3]{FIGURES/twoAgents.png}}
   \caption{A Schematic View of Two Pedestrians (Equation ~(\ref{Eq_socialforce})):
 The distance of pedestrians $i$ and $j$ is denoted by $d_{ij}$ and the sum of their radii is given by $r_{ij}$. The distance to the wall is denoted by $d_{iw}$.}\label{Fig_twoAgents}
 \end{figure}
 %
 
-The physical interaction $f_{ij}^{phy}$ describes the physical interaction when pedestrians have body contact, and it is composed by an elastic force that counteracts body compression and a sliding friction force that impedes relative tangential motion of two pedestrians.  Both of them are valid only when $r_{ij} > d_{ij}$.  In Helbing, Farkas and Vicsek, 2000 the interaction force is repulsive.  The model may also include an attraction force in its original version (Helbing and Molnar, 1995, Korhonen, 2015).  The interaction of a pedestrian with obstacles like walls is denoted by $mathbf{f}_{iw}$ and is treated analogously, i.e., $mathbf{f}_{iw} = mathbf{f}_{iw}^{soc} + mathbf{f}_{iw}^{phy}$.  Here $mathbf{f}_{iw}^{soc}$  is also an exponential term and $mathbf{f}_{iw}^{phy}$ is the physical interaction when pedestrians touch the wall physically.  
+The physical interaction $f_{ij}^{phy}$ describes the physical interaction when pedestrians have body contact, and it is composed by an elastic force that counteracts body compression and a sliding friction force that impedes relative tangential motion of two pedestrians.  Both of them are valid only when $r_{ij} > d_{ij}$.  In Helbing, Farkas and Vicsek, 2000 the interaction force is repulsive.  The model may also include an attraction force in its original version (Helbing and Molnar, 1995, Korhonen, 2015).  The interaction of a pedestrian with obstacles like walls is denoted by \$mathbf{f}_{iw}$ and is treated analogously, i.e., $\mathbf{f}_{iw} = \mathbf{f}_{iw}^{soc} + \mathbf{f}_{iw}^{phy}$.  Here $\mathbf{f}_{iw}^{soc}$  is also an exponential term and $\mathbf{f}_{iw}^{phy}$ is the physical interaction when pedestrians touch the wall physically.  
 
 %
 \begin{figure}[tb]
-  \centerline{\includegraphics[clip=true, width=30mm]{FIGURES/helbingFramework.png}}
+  \centerline{\includegraphics[clip=true, width=30mm, scale=0.3]{FIGURES/helbingFramework.png}}
   \caption{From Particle Dynamics to Crowd Simulation: The Framework of Many-particle Simulation in Helbing, Farkas, and Vicsek, 2000}\label{Fig_helbingFramework}
 \end{figure}
 %
@@ -76,11 +94,12 @@ The physical interaction $f_{ij}^{phy}$ describes the physical interaction when 
 
 This section provides a psychological perspective to reinterpret the social-force, and the concepts of interpersonal distance, proxemics and stress are critically involved.  Very importantly we introduce a new concept of desired distance in the social force, which is the counterpart of the desired velocity in the self-driving force.  With this new concepts we further discuss whether the model is consistent with Newton 3rd Law.
 
+
 \noindent \textbf{ A. Interpersonal Space and Social-Force}
 
 The concept of social force may originate from a concept by Lewin (Lewin, 1951), where social fields or social forces were first introduced to guide behavioral changes of people.  In soci-psychology, such social fields or forces are representations of certain social norms that regulate people's behavior when one individual interacts with others.  In a spatial sense such social norms refers to how people use their interpersonal distance, and it refers to proxemics in psychological theories.
 
-Interpersonal distance refers to a theory of how people use their personal space to interact with surrounding people.  In Hall, 1963 the theory was named by proxemics, and it was defined as "the interrelated observations and theories of man's use of space as a specialized elaboration of culture."  Proxemics suggests that we surround ourselves with a "bubble" of personal space, which protects us from too much arousal and helps us keep comfortable when we interact with others.  Psychologically, proximal distance origins from basic human instincts that we define a personal space to get a sense of safety.  People normally feel stressed when their personal space is invaded by others.  There are four interpersonal distances mentioned in Hall, 1966: intimate (<0.46m), personal (0.46m to 1.2m), social (1.2m to 3.7m), and public (>3.7m), and each one represents a kind of social relationship between individuals.  Here we highlight two issues about proxemics as below.
+Interpersonal distance refers to a theory of how people use their personal space to interact with surrounding people.  In Hall, 1963 the theory was named by proxemics, and it was defined as "the interrelated observations and theories of man's use of space as a specialized elaboration of culture."  Proxemics suggests that we surround ourselves with a "bubble" of personal space, which protects us from too much arousal and helps us keep comfortable when we interact with others.  Psychologically, proximal distance origins from basic human instincts that we define a personal space to get a sense of safety.  People normally feel stressed when their personal space is invaded by others.  There are four interpersonal distances mentioned in Hall, 1966: intimate (\l 0.46m), personal (0.46m to 1.2m), social (1.2m to 3.7m), and public (\g 3.7m), and each one represents a kind of social relationship between individuals.  Here we highlight two issues about proxemics as below.
 
 \noindent (a)  The interpersonal distance is object-oriented. For example, we usually keep smaller distance to a friend than to a stranger, and such distance is an indication of familiarity.  As named by personal distance (0.46m to 1.2m) in proxemics, this range is widely observed as the distance to interact with our friends or family, and normal conversations take place easily at this range.
 

@@ -85,7 +85,7 @@ class Agent(object):
         #print('test')
         print('X and Y Position:', self.pos)
         print('self.direction:', self.direction)
-	print('self.velocity:', self.actualV)
+        print('self.velocity:', self.actualV)
         
 
     def peopleInteraction(self, other, Dfactor=1, Afactor=1, Bfactor=1):
@@ -113,37 +113,37 @@ class Agent(object):
 
 
     def wallOnRoute(self, wall):
-	self.pos
-	self.actualV
-	return true
-		
-		
+        self.pos
+        self.actualV
+        return true
+        
+        
     def peopleInterOpinion(self, other):
         # self.D = DMatrix(selfID, otherID)
         # self.A = AMatrix(selfID, otherID)
         # self.B = BMatrix(selfID, otherID)
         dij = np.linalg.norm(self.pos - other.pos)
         
-	#nij = (self.pos - other.pos)/dij
+        #nij = (self.pos - other.pos)/dij
         
         #if dij < self.interactionRange:
-	#    self.dest = self.p*self.dest + (1-self.p)*other.dest
+    #    self.dest = self.p*self.dest + (1-self.p)*other.dest
 
 
-	otherDirection = np.array([0.0, 0.0])
-	otherSpeed = 0.0
-	num = 0
-	otherV = np.array([0.0, 0.0])
+        otherDirection = np.array([0.0, 0.0])
+        otherSpeed = 0.0
+        num = 0
+        otherV = np.array([0.0, 0.0])
 
         if dij < self.interactionRange:
-	    #self.desiredV = self.p*self.desiredV + (1-self.p)*other.actualV
-	    otherDirection = normalize(other.actualV)
-	    otherSpeed = np.linalg.norm(other.actualV)
-	    num = 1
-	    otherV = other.actualV
-	
+            #self.desiredV = self.p*self.desiredV + (1-self.p)*other.actualV
+            otherDirection = normalize(other.actualV)
+            otherSpeed = np.linalg.norm(other.actualV)
+            num = 1
+            otherV = other.actualV
+    
         return otherDirection, otherSpeed, num, otherV
-		
+        
 
 def normalize(v):
     norm=np.linalg.norm(v)
@@ -152,8 +152,11 @@ def normalize(v):
     return v/norm
 
 def g(x):
-    return np.max(x, 0.0)
-
+    if x<0.0:
+        return 0.0
+    else:
+        return x
+        
 
 # 计算点到线段的距离，并计算由点到与线段交点的单位向量
 def distanceP2W(point, wall):
@@ -178,21 +181,18 @@ def distanceP2W(point, wall):
 
         
 if __name__ == '__main__':
-	Ped1 = Agent()
-	Ped2 = Agent()
-	f1 = Ped1.peopleInteraction(Ped2)
-	f2 = Ped2.peopleInteraction(Ped1)
-	g1 = Ped1.peopleInterOpinion(Ped2)[0]
-	g2 = Ped2.peopleInterOpinion(Ped1)[2]
-	print('----------Testing starts here--------')
-	print('Other Opinion', g1)
-	print('Other Opinion', g2)
-	Ped1.showAttr()
-	Ped1.showAttr()
-	v = Ped1.adaptVel
-	Ped1.changeAttr(1,1)
-	Ped2.changeAttr(2,2)
+    Ped1 = Agent()
+    Ped2 = Agent()
+    f1 = Ped1.peopleInteraction(Ped2)
+    f2 = Ped2.peopleInteraction(Ped1)
+    g1 = Ped1.peopleInterOpinion(Ped2)[0]
+    g2 = Ped2.peopleInterOpinion(Ped1)[2]
+    print('----------Testing starts here--------')
+    print('Other Opinion', g1)
+    print('Other Opinion', g2)
+    Ped1.showAttr()
+    Ped1.showAttr()
+    v = Ped1.adaptVel
+    Ped1.changeAttr(1,1)
+    Ped2.changeAttr(2,2)
 
-
-
-	

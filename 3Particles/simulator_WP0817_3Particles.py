@@ -158,7 +158,7 @@ while running:
 
 
     for idai,ai in enumerate(agents):
-        # 初始速度和位置
+        # Initial position and velocity
         ai.direction = normalize(ai.dest - ai.pos)
         ai.desiredV = ai.desiredSpeed*ai.direction
         # Compute forces on agents

@@ -150,9 +150,7 @@ while running:
         pygame.draw.line(screen, LINECOLOR,startPx,endPx)
 
 
-
-
-    # 计算相互作用力
+    # Compute interaction force
     for idai,ai in enumerate(agents):
         # 初始速度和位置
         #v0 = ai.actualV
@@ -163,30 +161,28 @@ while running:
         #adapt = ai.adaptVel()
         peopleInter = 0.0
         wallInter = 0.0
-	otherMovingDir = np.array([0.0, 0.0])
-	otherMovingSpeed = 0.0
-	otherMovingNum = 0
+        otherMovingDir = np.array([0.0, 0.0])
+        otherMovingSpeed = 0.0
+        otherMovingNum = 0
 
         for idaj,aj in enumerate(agents):
-             if idai == idaj:
-                 continue
-             peopleInter += ai.peopleInteraction(aj, DFactor[idai, idaj], AFactor[idai, idaj], BFactor[idai, idaj])
+            if idai == idaj:
+                continue
+            peopleInter += ai.peopleInteraction(aj, DFactor[idai, idaj], AFactor[idai, idaj], BFactor[idai, idaj])
              
-             otherMovingDir += ai.peopleInterOpinion(aj)[0]
-	     otherMovingSpeed += ai.peopleInterOpinion(aj)[1]
-	     otherMovingNum += ai.peopleInterOpinion(aj)[2]
+            otherMovingDir += ai.peopleInterOpinion(aj)[0]
+            otherMovingSpeed += ai.peopleInterOpinion(aj)[1]
+            otherMovingNum += ai.peopleInterOpinion(aj)[2]
       
-
-	if otherMovingNum != 0:
-	    ai.direction = ai.p*ai.direction + (1-ai.p)*otherMovingDir
-	    ai.desiredSpeed = ai.p*ai.desiredSpeed + (1-ai.p)*otherMovingSpeed/otherMovingNum
-	    ai.desiredV = ai.desiredSpeed*ai.direction
-
-	#ai.desiredV = ai.p*ai.desiredV + (1-ai.p)*otherMovingDir
+        if otherMovingNum != 0:
+            ai.direction = ai.p*ai.direction + (1-ai.p)*otherMovingDir
+            ai.desiredSpeed = ai.p*ai.desiredSpeed + (1-ai.p)*otherMovingSpeed/otherMovingNum
+            ai.desiredV = ai.desiredSpeed*ai.direction
+            #ai.desiredV = ai.p*ai.desiredV + (1-ai.p)*otherMovingDir
 
         adapt = ai.adaptVel()
-	
-	for wall in walls:
+    
+        for wall in walls:
             wallInter += ai.wallInteraction(wall)
 
         #print('Forces from Walls:', wallInter)

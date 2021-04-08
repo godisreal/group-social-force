@@ -31,9 +31,9 @@ def readCSV(fileName, mode='float'):
     if mode=='string':
         print dataNP[1:, 1:]
         return dataNP[1:, 1:]
-	
+
     if mode=='float':
-	print dataNP[1:, 1:]
+        print dataNP[1:, 1:]
         (I, J) = np.shape(dataNP)
         print "The size of tha above matrix:", [I, J]
         #print "The effective data size:", [I-1, J-1]
@@ -51,5 +51,5 @@ def readCSV(fileName, mode='float'):
 
 if __name__ == '__main__':
     test = readCSV("Agent_Data2018.csv", 'string')
-	
-	
+    
+    

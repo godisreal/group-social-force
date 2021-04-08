@@ -19,8 +19,8 @@ class obst(object):
     params:
         Obstacle parameters according to the type. This in the form 
         of: Line -> [x1,y1,x2,y2]
-	    Rect -> [x,y,w,h] 
-	    Circle -> [x,y,r,None]
+        Rect -> [x,y,w,h] 
+        Circle -> [x,y,r,None]
         """
     
     def __init__(self, oid=0, mode='line', params=[0,0,0,0]):

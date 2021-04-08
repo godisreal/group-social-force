@@ -13,16 +13,16 @@ class Agent(object):
     def __init__(self, x=1, y=1):
         # random initialize a agent
         
-	#self.memory = np.array([0.0, 0.0], [0.0, 0.0], [0.0, 0.0])
-	#self.sumAdapt = np.array([0.0, 0.0])
-	self.ID = 0 #Name or index of agents
-	self.inComp = 1
-	self.aType = 'MoveToDest'  #{'MoveToDest' 'Follow' 'Talk' 'Search'}
-	
-	self.tpre = random.uniform(6.0,22.0)
-	self.maxSpeed = random.uniform(1.0,2.0)
-	self.diss = random.uniform(-1.0,0.0)
-	
+        #self.memory = np.array([0.0, 0.0], [0.0, 0.0], [0.0, 0.0])
+        #self.sumAdapt = np.array([0.0, 0.0])
+        self.ID = 0 #Name or index of agents
+        self.inComp = 1
+        self.aType = 'MoveToDest'  #{'MoveToDest' 'Follow' 'Talk' 'Search'}
+
+        self.tpre = random.uniform(6.0,22.0)
+        self.maxSpeed = random.uniform(1.0,2.0)
+        self.diss = random.uniform(-1.0,0.0)
+        
         self.posX_init = random.uniform(8,24)
         self.posY_init = random.uniform(8,18)
         self.pos = np.array([self.posX_init, self.posY_init])	
@@ -36,63 +36,63 @@ class Agent(object):
         self.dest = np.array([60.0,10.0])
         self.direction = normalize(self.dest - self.pos)
         #self.direction = np.array([0.0, 0.0])
-	
-	self.knowndoor = []
-	self.others = []
-	self.destmemory = []
-	self.destmemory.append(self.dest)
+
+        self.knowndoor = []
+        self.others = []
+        self.destmemory = []
+        self.destmemory.append(self.dest)
         
         self.desiredSpeed = 2.0 #random.uniform(0.3,2.3) #1.8
         self.desiredV = self.desiredSpeed*self.direction
-	self.desiredSpeedMode = 'random' #{'random' 'fixed' 'increase' 'decrease'}
+        self.desiredSpeedMode = 'random' #{'random' 'fixed' 'increase' 'decrease'}
         
         self.tau = random.uniform(8,16) #10.0
         self.drivenAcc =(self.desiredV - self.actualV)/self.tau
               
         self.mass = 60 #random.uniform(40,90) #60.0
         self.radius = 0.35 #1.6 #0.3
-	
+
         self.interactionRange = 3.0 #Distance for communication (talking)
         self.p = 0.2
-	self.pMode = 'random' #{'random' 'fixed' 'increase' 'decrease'}
+        self.pMode = 'random' #{'random' 'fixed' 'increase' 'decrease'}
         
         self.bodyFactorA = 12.0
         self.slideFricFactorA = 240000
-	
-	# Cohesive Force
+
+        # Cohesive Force
         self.A_CF = 1 #30/20000 #2
         self.B_CF = 1 #random.uniform(0.8,1.6) #0.8 #0.08
-	
-	# Social Force
-	self.A_SF = 200 #2
+
+        # Social Force
+        self.A_SF = 200 #2
         self.B_SF = 0.8 #random.uniform(0.8,1.6) #0.8 #0.08
-	
-	# Wall Force
-	self.A_WF = 60 #200 #60 #2
+
+        # Wall Force
+        self.A_WF = 60 #200 #60 #2
         self.B_WF = 3.2 #0.2 #0.8 #3.2 #2.2 #random.uniform(0.8,1.6) #0.08
         
-	self.bodyFactorW = 12.0
+        self.bodyFactorW = 12.0
         self.slideFricFactorW = 240000
-	
-	self.Goal = 0
-	self.timeOut = 0.0
-	
+
+        self.Goal = 0
+        self.timeOut = 0.0
+
         self.desiredV_old = np.array([0.0, 0.0])
-	self.actualV_old = np.array([0.0, 0.0])
-	
-	self.lamb = random.uniform(0.2,0.4)
-	
-	self.diw_desired = 0.2
-	
-	self.ratioV = 1
-	self.stressLevel = 1
-	
-	self.color = [255, 0, 0] #blue
-	
-	self.moving_tau = 0.7
-	self.tpre_tau = 1.6
-	self.talk_tau = 2.6
-	self.talk_prob = 0.6
+        self.actualV_old = np.array([0.0, 0.0])
+
+        self.lamb = random.uniform(0.2,0.4)
+    
+        self.diw_desired = 0.2
+
+        self.ratioV = 1
+        self.stressLevel = 1
+
+        self.color = [255, 0, 0] #blue
+
+        self.moving_tau = 0.7
+        self.tpre_tau = 1.6
+        self.talk_tau = 2.6
+        self.talk_prob = 0.6
         
         print('X and Y Position:', self.pos)
         print('self.direction:', self.direction)
@@ -117,25 +117,25 @@ class Agent(object):
     #     self.pos = r0 + v0 + 0.5*accl
     #     print(accl,self.actualV,self.pos)
     
-    
     def shoulders(self):
-	if np.allclose(self.actualV, np.zeros(2)):
-	    direction = self.direction
-	else: 
-	    direction = np.array([-self.actualV[1], self.actualV[0]])
-	    direction = normalize(direction)
+        if np.allclose(self.actualV, np.zeros(2)):
+            direction = self.direction
+            direction = normalize(direction)
+        else: 
+            direction = np.array([-self.actualV[1], self.actualV[0]])
+            direction = normalize(direction)
 	
-	leftPx = self.pos + 2*self.radius*direction
-	rightPx = self.pos - 2*self.radius*direction
-	
-	return leftPx, rightPx
+        leftPx = self.pos + self.radius*direction
+        rightPx = self.pos - self.radius*direction	
+        return leftPx, rightPx
+        
 
     def adaptDirection(self):
         self.direction = normalize(self.destmemeory[-1]-self.pos)
         if np.allclose(self.direction, np.zeros(2)):
             self.direction = np.zeros(2)
         return self.direction
-	
+
     def adaptVel(self):
         deltaV = self.desiredV - self.actualV
         if np.allclose(deltaV, np.zeros(2)):
@@ -146,34 +146,33 @@ class Agent(object):
     def adaptP(self, flag = 'random'):
         if flag == 'random':
             self.p = self.p + random.uniform(-0.3, 0.3)
-	    self.p = max(-1.0, min(1.0, self.p))
-	elif flag == 'increase' and self.p<1.0:
-	    # Use randome walk or not ???
-	    self.p = self.p + random.uniform(0.0, 0.3)
-	    self.p = min(1.0, self.p)
-	elif flag == 'decrease'and self.p>-1.0:
-	    self.p = self.p + random.uniform(-0.3, 0.0)
-	    self.p = max(-1.0, self.p)
+            self.p = max(-1.0, min(1.0, self.p))
+        elif flag == 'increase' and self.p<1.0:
+            # Use randome walk or not ???
+            self.p = self.p + random.uniform(0.0, 0.3)
+            self.p = min(1.0, self.p)
+        elif flag == 'decrease' and self.p>-1.0:
+            self.p = self.p + random.uniform(-0.3, 0.0)
+            self.p = max(-1.0, self.p)
         return None
 	
-    
+
     def adaptDesiredSpeed(self, flag = 'random'):
         if flag == 'random':
             self.desiredSpeed = self.desiredSpeed + random.uniform(-0.3, 0.3)
-	    self.desiredSpeed = max(0.0, min(3.0, self.desiredSpeed))
-	elif flag == 'increase' and self.desiredSpeed<3.0:
-	    self.desiredSpeed = self.desiredSpeed + random.uniform(0.0, 0.3)
-	    self.desiredSpeed = min(3.0, self.desiredSpeed)
-	elif flag == 'decrease'and self.desiredSpeed>0.0:
-	    self.desiredSpeed = self.desiredSpeed + random.uniform(-0.3, 0.0)
-	    self.desiredSpeed = max(0.0, self.desiredSpeed)
+            self.desiredSpeed = max(0.0, min(3.0, self.desiredSpeed))
+        elif flag == 'increase' and self.desiredSpeed<3.0:
+            self.desiredSpeed = self.desiredSpeed + random.uniform(0.0, 0.3)
+            self.desiredSpeed = min(3.0, self.desiredSpeed)
+        elif flag == 'decrease' and self.desiredSpeed>0.0:
+            self.desiredSpeed = self.desiredSpeed + random.uniform(-0.3, 0.0)
+            self.desiredSpeed = max(0.0, self.desiredSpeed)
         return None
 	
 
     def selfRepulsion(self, Dfactor=1, Afactor=1, Bfactor=1):
-	first = -self.direction*Afactor*self.A_CF*np.exp((self.radius*Dfactor)/(self.B_CF*Bfactor))*(self.radius*Dfactor)
-	return first
-	
+        first = -self.direction*Afactor*self.A_CF*np.exp((self.radius*Dfactor)/(self.B_CF*Bfactor))*(self.radius*Dfactor)
+        return first
 
     def changeAttr(self, x=1, y=1, Vx=1, Vy=1):
         self.posX = x
@@ -188,20 +187,19 @@ class Agent(object):
         #print('test')
         print('X and Y Position:', self.pos)
         print('self.direction:', self.direction)
-	print('self.velocity:', self.actualV)
+        print('self.velocity:', self.actualV)
         
 
     def cohesiveForce(self, other, Dfactor=1, Afactor=1, Bfactor=1):
 
         # self.A = AMatrix(selfID, otherID)
         # self.B = BMatrix(selfID, otherID)
-	#phiij = vectorAngleCos(self.actualV , (other.pos - self.pos))
-	#anisoF = self.lamb + (1-self.lamb)*(1+cos(phiij))/2
-	
-	rij = self.radius + other.radius
+        #phiij = vectorAngleCos(self.actualV , (other.pos - self.pos))
+        #anisoF = self.lamb + (1-self.lamb)*(1+cos(phiij))/2
+
+        rij = self.radius + other.radius
         dij = np.linalg.norm(self.pos - other.pos)
         nij = (self.pos - other.pos)/dij
-
         first = Afactor*self.A_CF*np.exp((rij*Dfactor-dij)/(self.B_CF*Bfactor))*nij*(rij*Dfactor-dij) #*anisoF
         return first
 	
@@ -211,16 +209,14 @@ class Agent(object):
         dij = np.linalg.norm(self.pos - other.pos)
         nij = (self.pos - other.pos)/dij
         first = self.A_SF*np.exp((rij-dij)/self.B_SF)*nij
+        second = self.bodyFactorA*ggg(rij-dij)*nij
 	
-	second = self.bodyFactorA*ggg(rij-dij)*nij
-	
-	#Issue: nij is a vector directing from j to i.  
-	
-	#*(rij*Dfactor-dij)/20000+ self.bodyFactor*g(rij-dij)*nij/10000
+        #Issue: nij is a vector directing from j to i.  
+        #*(rij*Dfactor-dij)/20000+ self.bodyFactor*g(rij-dij)*nij/10000
         tij = np.array([-nij[1],nij[0]])
         deltaVij = (self.actualV - other.actualV)*tij
         third = self.slideFricFactorA*ggg(rij-dij)*deltaVij*tij
-	#third = 300*exp(rij-dij)*deltaVij*tij/dij
+        #third = 300*exp(rij-dij)*deltaVij*tij/dij
 	
         return first + second #+ third
 
@@ -241,8 +237,8 @@ class Agent(object):
     def wallForce(self, wall):
 	#ftest = open("wallForceTest.txt", "w+")
         ri = self.radius
-	p0 = np.array([wall.params[0],wall.params[1]])
-	p1 = np.array([wall.params[2],wall.params[3]])
+        p0 = np.array([wall.params[0],wall.params[1]])
+        p1 = np.array([wall.params[2],wall.params[3]])
         diw,niw = distanceP2L(self.pos, p0, p1)
         first = -self.A_WF*np.exp((self.diw_desired-diw)/self.B_WF)*niw
         second = -600*exp((2*ri-diw)/0.2)*niw
@@ -260,8 +256,8 @@ class Agent(object):
 
 
     def wallOnRoute(self, wall, mode=1.0, lookhead=3.0):
-	p1 = self.pos
-	p2 = self.pos + (mode*self.desiredV+(1-mode)*self.actualV)*lookhead
+        p1 = self.pos
+        p2 = self.pos + (mode*self.desiredV+(1-mode)*self.actualV)*lookhead
 	
 	#if mode=="dv":
 	#    p2 = self.pos + self.desiredV*3.0
@@ -350,20 +346,19 @@ class Agent(object):
     #####################################
      
     def opinionDynamics(self):
-	
         # self.D = DMatrix(selfID, otherID)
         # self.A = AMatrix(selfID, otherID)
         # self.B = BMatrix(selfID, otherID)
         # dij = np.linalg.norm(self.pos - other.pos)
         
-	otherMovingDir = np.array([0.0, 0.0])
+        otherMovingDir = np.array([0.0, 0.0])
         otherMovingSpeed = 0.0
         otherMovingNum = 0
 	
-	for idaj, aj in enumerate(self.others):
-	    otherMovingDir += normalize(aj.actualV) #/DFactor[idai, idaj]*AFactor[idai, idaj]
-	    otherMovingSpeed += np.linalg.norm(aj.actualV) #/DFactor[idai, idaj]*AFactor[idai, idaj]
-	    otherMovingNum += 1
+        for idaj, aj in enumerate(self.others):
+            otherMovingDir += normalize(aj.actualV) #/DFactor[idai, idaj]*AFactor[idai, idaj]
+            otherMovingSpeed += np.linalg.norm(aj.actualV) #/DFactor[idai, idaj]*AFactor[idai, idaj]
+            otherMovingNum += 1
 	
 	    #otherMovingDir += normalize(aj.actualV) #/DFactor[idai, idaj]*AFactor[idai, idaj]
 	    #otherMovingSpeed += np.linalg.norm(aj.actualV) #/DFactor[idai, idaj]*AFactor[idai, idaj]
@@ -389,20 +384,20 @@ class Agent(object):
         
 	
 if __name__ == '__main__':
-	Ped1 = Agent()
-	Ped2 = Agent()
-	f1 = Ped1.cohesiveForce(Ped2)
-	f2 = Ped2.cohesiveForce(Ped1)
-	g1 = Ped1.opinionDynamics(Ped2)[0]
-	g2 = Ped2.opinionDynamics(Ped1)[2]
-	print('----------Testing starts here--------')
-	print('Other Opinion', g1)
-	print('Other Opinion', g2)
-	Ped1.showAttr()
-	Ped1.showAttr()
-	v = Ped1.adaptVel
-	Ped1.changeAttr(1,1)
-	Ped2.changeAttr(2,2)
+    Ped1 = Agent()
+    Ped2 = Agent()
+    f1 = Ped1.cohesiveForce(Ped2)
+    f2 = Ped2.cohesiveForce(Ped1)
+    g1 = Ped1.opinionDynamics(Ped2)[0]
+    g2 = Ped2.opinionDynamics(Ped1)[2]
+    print('----------Testing starts here--------')
+    print('Other Opinion', g1)
+    print('Other Opinion', g2)
+    Ped1.showAttr()
+    Ped1.showAttr()
+    v = Ped1.adaptVel
+    Ped1.changeAttr(1,1)
+    Ped2.changeAttr(2,2)
 
 
 

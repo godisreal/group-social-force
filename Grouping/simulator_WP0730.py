@@ -5,7 +5,7 @@
 import pygame
 import pygame.draw
 import numpy as np
-from particle_Regroup import *
+from particle import *
 #from tools import *
 #from config import *
 import random

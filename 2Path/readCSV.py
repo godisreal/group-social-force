@@ -17,26 +17,26 @@ def readCSV(fileName, mode='float'):
         strData.append(item)
 
     print(strData)
-    print 'np.shape(strData)=', np.shape(strData)
-    print '\n'
+    print('np.shape(strData)=', np.shape(strData))
+    print('\n')
     
     dataNP = np.array(strData)
-    print dataNP
-    print 'np.shape(dataNP)', np.shape(dataNP)
-    print '\n'
+    print(dataNP)
+    print('np.shape(dataNP)', np.shape(dataNP))
+    print('\n')
 
     #print(strData[1:,1:])
     csvFile.close()	
     
     if mode=='string':
-        print dataNP[1:, 1:]
+        print(dataNP[1:, 1:])
         return dataNP[1:, 1:]
 
     if mode=='float':
-        print dataNP[1:, 1:]
+        print(dataNP[1:, 1:])
         (I, J) = np.shape(dataNP)
-        print "The size of tha above matrix:", [I, J]
-        #print "The effective data size:", [I-1, J-1]
+        print("The size of tha above matrix:", [I, J])
+        #print("The effective data size:", [I-1, J-1])
 
         matrix = np.zeros((I, J))
         #print matrix
@@ -45,7 +45,7 @@ def readCSV(fileName, mode='float'):
             for j in range(1,J):
                 matrix[i,j] = float(dataNP[i,j])
 
-    print matrix[1:, 1:]
+    print(matrix[1:, 1:])
     return matrix[1:, 1:]
     
 

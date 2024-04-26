@@ -70,7 +70,7 @@ def GetIntersectPointofLines(x1,y1,x2,y2,x3,y3,x4,y4):
     A2,B2,C2 = GeneralEquation(x3,y3,x4,y4)
     m=A1*B2-A2*B1
     if m==0:
-        print("无交点")
+        print("No intersection!")
     else:
         x=(C2*B1-C1*B2)/m
         y=(C1*A2-C2*A1)/m
@@ -137,6 +137,6 @@ if __name__ == '__main__':
     # v3 = np.array([29.97,23.31])
     # print(worldCoord2ScreenCoord(v3, [1000,800],30))
     wall = [3.33, 3.33, 29.97, 3.33]
-    print distanceP2W(np.array([10.0,10.0]),wall)
+    print(distanceP2W(np.array([10.0,10.0]),wall))
     # print distanceP2W(np.array([0.5,2.0]),wall)
     # print distanceP2W(np.array([2.0,2.0]),wall)

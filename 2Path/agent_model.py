@@ -124,7 +124,7 @@ class Agent(object):
         else: 
             direction = np.array([-self.actualV[1], self.actualV[0]])
             direction = normalize(direction)
-	
+
         leftPx = self.pos + self.radius*direction
         rightPx = self.pos - self.radius*direction	
         return leftPx, rightPx
@@ -155,7 +155,6 @@ class Agent(object):
             self.p = self.p + random.uniform(-0.3, 0.0)
             self.p = max(-1.0, self.p)
         return None
-	
 
     def adaptDesiredSpeed(self, flag = 'random'):
         if flag == 'random':
@@ -168,7 +167,6 @@ class Agent(object):
             self.desiredSpeed = self.desiredSpeed + random.uniform(-0.3, 0.0)
             self.desiredSpeed = max(0.0, self.desiredSpeed)
         return None
-	
 
     def selfRepulsion(self, Dfactor=1, Afactor=1, Bfactor=1):
         first = -self.direction*Afactor*self.A_CF*np.exp((self.radius*Dfactor)/(self.B_CF*Bfactor))*(self.radius*Dfactor)
@@ -181,7 +179,6 @@ class Agent(object):
         self.actualVX = Vx
         self.actualVY = Vy
         self.actualV = np.array([self.actualVX, self.actualVY])
-
 
     def showAttr(self):
         #print('test')
@@ -202,7 +199,6 @@ class Agent(object):
         nij = (self.pos - other.pos)/dij
         first = Afactor*self.A_CF*np.exp((rij*Dfactor-dij)/(self.B_CF*Bfactor))*nij*(rij*Dfactor-dij) #*anisoF
         return first
-	
 
     def agentForce(self, other):
         rij = self.radius + other.radius
@@ -210,14 +206,14 @@ class Agent(object):
         nij = (self.pos - other.pos)/dij
         first = self.A_SF*np.exp((rij-dij)/self.B_SF)*nij
         second = self.bodyFactorA*ggg(rij-dij)*nij
-	
+
         #Issue: nij is a vector directing from j to i.  
         #*(rij*Dfactor-dij)/20000+ self.bodyFactor*g(rij-dij)*nij/10000
         tij = np.array([-nij[1],nij[0]])
         deltaVij = (self.actualV - other.actualV)*tij
         third = self.slideFricFactorA*ggg(rij-dij)*deltaVij*tij
         #third = 300*exp(rij-dij)*deltaVij*tij/dij
-	
+
         return first + second #+ third
 
     ############################
@@ -228,119 +224,117 @@ class Agent(object):
         nij = (self.pos - other.pos)/dij
         first = self.bodyFactorA*g(rij-dij)*nij
         #print >> f, "first:", first, "/n"
-	
+
         return first
     # This is not used any more. 
     ############################
 
 
     def wallForce(self, wall):
-	#ftest = open("wallForceTest.txt", "w+")
+        
+        #ftest = open("wallForceTest.txt", "w+")
         ri = self.radius
         p0 = np.array([wall.params[0],wall.params[1]])
         p1 = np.array([wall.params[2],wall.params[3]])
         diw,niw = distanceP2L(self.pos, p0, p1)
         first = -self.A_WF*np.exp((self.diw_desired-diw)/self.B_WF)*niw
         second = -600*exp((2*ri-diw)/0.2)*niw
-	#second = -self.bodyFactorW*ggg(2*ri-diw)*niw*200000
-	
-	#Issue: the diretion of niw is from the agent to the wall.  Check Needed!
-	#print >> ftest, 'first:', first, '\n'
-	
+        #second = -self.bodyFactorW*ggg(2*ri-diw)*niw*200000
+        #Issue: the diretion of niw is from the agent to the wall.  Check Needed!
+        #ftest.write('first:', first, '\n')
+
         tiw = np.array([-niw[1],niw[0]])
         third = self.slideFricFactorW*ggg(ri-diw)*(self.actualV*tiw)*tiw/1000
-	#print >> ftest, 'second:', second, '\n'
-	
-	#ftest.close()
+        #ftest.write('second:', second, '\n')
+        #ftest.close()
         return first + second + third
 
 
     def wallOnRoute(self, wall, mode=1.0, lookhead=3.0):
         p1 = self.pos
         p2 = self.pos + (mode*self.desiredV+(1-mode)*self.actualV)*lookhead
-	
-	#if mode=="dv":
-	#    p2 = self.pos + self.desiredV*3.0
-	#elif mode=="av":
-	#    p2 = self.pos + self.actualV
-	#else:
-	#    print 'Error: mode must be either "dv" or "av"!'
-	#    return
-	
-	
-	# The time interval to look ahead is an important issue
-	# It is a major issue to use whether actualV or desiredV
-	w1 = np.array([wall.params[0],wall.params[1]])
-	w2 = np.array([wall.params[2],wall.params[3]])
-
-	result = None #np.array([0.0,0.0])
-	dist = None
-	if (max(p1[0], p2[0])<min(w1[0], w2[0])) or (min(p1[0], p2[0])>max(w1[0], w2[0])):
-	    #flag = False
-	    return dist
-	     
-	if (max(p1[1], p2[1])<min(w1[1], w2[1])) or (min(p1[1], p2[1])>max(w1[1], w2[1])):
-	    #flag = False
-	    return dist
-	    
-	result = crossPoint(p1, p2, w1, w2)
-
-	#result = np.array([x,y])
-	logic1 = np.dot(result-w1, result-w2)
-	logic2 = np.dot(p1-p2, p1-result)
-	
-	fuzzyPara = random.uniform(0.0,2.0)
-	# flag is true if there is a wall ahead
-	# otherwise it is false
-	#flag = True
-	dist = np.linalg.norm(self.pos - result)
-
-	if logic1>0.0 and min(np.linalg.norm(result-w1), np.linalg.norm(result-w2))>fuzzyPara:
-            #flag = False
-	    dist = None
         
+        #if mode=="dv":
+        #    p2 = self.pos + self.desiredV*3.0
+        #elif mode=="av":
+        #    p2 = self.pos + self.actualV
+        #else:
+        #    print 'Error: mode must be either "dv" or "av"!'
+        #    return
+        
+        
+        # The time interval to look ahead is an important issue
+        # It is a major issue to use whether actualV or desiredV
+        w1 = np.array([wall.params[0],wall.params[1]])
+        w2 = np.array([wall.params[2],wall.params[3]])
+        
+        result = None #np.array([0.0,0.0])
+        dist = None
+        if (max(p1[0], p2[0])<min(w1[0], w2[0])) or (min(p1[0], p2[0])>max(w1[0], w2[0])):
+            #flag = False
+            return dist
+             
+        if (max(p1[1], p2[1])<min(w1[1], w2[1])) or (min(p1[1], p2[1])>max(w1[1], w2[1])):
+            #flag = False
+            return dist
+            
+        result = crossPoint(p1, p2, w1, w2)
+        
+        #result = np.array([x,y])
+        logic1 = np.dot(result-w1, result-w2)
+        logic2 = np.dot(p1-p2, p1-result)
+        
+        fuzzyPara = random.uniform(0.0,2.0)
+        # flag is true if there is a wall ahead
+        # otherwise it is false
+        #flag = True
+        dist = np.linalg.norm(self.pos - result)
+        
+        if logic1>0.0 and min(np.linalg.norm(result-w1), np.linalg.norm(result-w2))>fuzzyPara:
+                #flag = False
+            dist = None
+            
         if logic2<0.0:
-            #flag = False
-	    dist = None
+                #flag = False
+            dist = None
+            
+        return dist
         
-	return dist
-	
-	
+        
     def wallInBetween(self, other, wall):
-	p1 = self.pos
-	p2 = other.pos
-	w1 = np.array([wall.params[0],wall.params[1]])
-	w2 = np.array([wall.params[2],wall.params[3]])
-	
-	result = None #np.array([0.0,0.0])
-	if (max(p1[0], p2[0])<min(w1[0], w2[0])) or (min(p1[0], p2[0])>max(w1[0], w2[0])):
-	    flag = False
-	    return result, flag
-	     
-	if (max(p1[1], p2[1])<min(w1[1], w2[1])) or (min(p1[1], p2[1])>max(w1[1], w2[1])):
-	    flag = False
-	    return result, flag
-	
-	#result = np.array([0.0,0.0])
-	result = crossPoint(p1, p2, w1, w2)
-	logic1 = np.dot(result-w1, result-w2)
-	logic2 = np.dot(result-p1, result-p2)
-	
-	# flag is True if there is a wall in between.  
-	# otherwise it is false. 
-	flag = True
-	
-	if logic1>0.0:
-            flag = False
-	    result = None
+        p1 = self.pos
+        p2 = other.pos
+        w1 = np.array([wall.params[0],wall.params[1]])
+        w2 = np.array([wall.params[2],wall.params[3]])
         
+        result = None #np.array([0.0,0.0])
+        if (max(p1[0], p2[0])<min(w1[0], w2[0])) or (min(p1[0], p2[0])>max(w1[0], w2[0])):
+            flag = False
+            return result, flag
+             
+        if (max(p1[1], p2[1])<min(w1[1], w2[1])) or (min(p1[1], p2[1])>max(w1[1], w2[1])):
+            flag = False
+            return result, flag
+        
+        #result = np.array([0.0,0.0])
+        result = crossPoint(p1, p2, w1, w2)
+        logic1 = np.dot(result-w1, result-w2)
+        logic2 = np.dot(result-p1, result-p2)
+        
+        # flag is True if there is a wall in between.  
+        # otherwise it is false. 
+        flag = True
+        
+        if logic1>0.0:
+            flag = False
+            result = None
+            
         if logic2>0.0:
             flag = False
-	    result = None
-        
-	return result, flag
-		
-		
+            result = None
+            
+        return result, flag
+
     #####################################
     # how an agent interacts with others
     #####################################
@@ -354,35 +348,35 @@ class Agent(object):
         otherMovingDir = np.array([0.0, 0.0])
         otherMovingSpeed = 0.0
         otherMovingNum = 0
-	
+    
         for idaj, aj in enumerate(self.others):
             otherMovingDir += normalize(aj.actualV) #/DFactor[idai, idaj]*AFactor[idai, idaj]
             otherMovingSpeed += np.linalg.norm(aj.actualV) #/DFactor[idai, idaj]*AFactor[idai, idaj]
             otherMovingNum += 1
-	
-	    #otherMovingDir += normalize(aj.actualV) #/DFactor[idai, idaj]*AFactor[idai, idaj]
-	    #otherMovingSpeed += np.linalg.norm(aj.actualV) #/DFactor[idai, idaj]*AFactor[idai, idaj]
-	
-	#nij = (self.pos - other.pos)/dij
         
-        #if dij < self.interactionRange:
-	#    self.dest = self.p*self.dest + (1-self.p)*other.dest
-
-	#otherDirection = np.array([0.0, 0.0])
-	#otherSpeed = 0.0
-	#num = 0
-	#otherV = np.array([0.0, 0.0])
-
-        #if dij < self.interactionRange:
-	    #self.desiredV = self.p*self.desiredV + (1-self.p)*other.actualV
-	    #otherDirection = normalize(other.actualV)
-	    #otherSpeed = np.linalg.norm(other.actualV)
-	    #num = 1
-	    #otherV = other.actualV
-	
+            #otherMovingDir += normalize(aj.actualV) #/DFactor[idai, idaj]*AFactor[idai, idaj]
+            #otherMovingSpeed += np.linalg.norm(aj.actualV) #/DFactor[idai, idaj]*AFactor[idai, idaj]
+        
+        #nij = (self.pos - other.pos)/dij
+            
+            #if dij < self.interactionRange:
+        #    self.dest = self.p*self.dest + (1-self.p)*other.dest
+        
+        #otherDirection = np.array([0.0, 0.0])
+        #otherSpeed = 0.0
+        #num = 0
+        #otherV = np.array([0.0, 0.0])
+        
+            #if dij < self.interactionRange:
+            #self.desiredV = self.p*self.desiredV + (1-self.p)*other.actualV
+            #otherDirection = normalize(other.actualV)
+            #otherSpeed = np.linalg.norm(other.actualV)
+            #num = 1
+            #otherV = other.actualV
+    
         return otherMovingDir, otherMovingSpeed/otherMovingNum
         
-	
+    
 if __name__ == '__main__':
     Ped1 = Agent()
     Ped2 = Agent()
@@ -399,6 +393,3 @@ if __name__ == '__main__':
     Ped1.changeAttr(1,1)
     Ped2.changeAttr(2,2)
 
-
-
-	

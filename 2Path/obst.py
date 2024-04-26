@@ -41,4 +41,4 @@ class obst(object):
 
 if __name__ == '__main__':
     obst = obst()
-    print 'Test OK'
+    print('Test OK')

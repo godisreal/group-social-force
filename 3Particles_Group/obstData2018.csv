@@ -1,0 +1,10 @@
+,start X,start Y,end X,end Y,mode,oid,arrow,inComp,pointerX1,pointerY1,pointerX2,pointerY2
+Line0,3.33,3.33,49.97,3.33,line,0,1,1,NaN,NaN,NaN,NaN
+Line1,3.33,3.33,3.33,33.31,line,1,-1,1,NaN,NaN,NaN,NaN
+Line2,3.33,33.31,49.97,33.31,line,2,1,1,NaN,NaN,NaN,NaN
+Slash-Line3,23,3.33,30,14,line,3,1,1,NaN,NaN,NaN,NaN
+Slash-Line4,23,33.31,30,20,line,4,-1,1,NaN,NaN,NaN,NaN
+Line5,30,14,37,14,line,5,-1,1,NaN,NaN,NaN,NaN
+Line6,30,20,37,20,line,6,0,1,NaN,NaN,NaN,NaN
+2DoorLine7,46,8,46,27,line,7,1,1,46,29,46,6
+Rect8,20,10,22,26,rect,8,1,1,21,9,21,27

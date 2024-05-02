@@ -1,0 +1,4 @@
+,StartX,StartY,EndX,EndY,4/arrow,5/id,6/inComp,7/exitSign
+Door1,72.3,32,76,34,2,0,1,1
+Door2,60.3,3,66,5,-2,1,1,1
+Door4,67,17,70,20,-2,3,1,1
